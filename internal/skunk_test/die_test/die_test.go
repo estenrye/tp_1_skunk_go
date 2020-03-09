@@ -1,10 +1,44 @@
-package die_test
+package dietest
 
 import (
 	"testing"
 
 	"github.com/estenrye/skunk/internal/skunk/die"
 )
+
+func Test_mockdie_is_predictable_for_a_single_roll(t *testing.T) {
+	for i := 1; i <= 6; i++ {
+		d1 := NewDieFromInt(i)
+		d1.Roll()
+		if d1.GetLastRoll() != i {
+			t.Errorf("MockDie is not reliable, expected %d but got %d", i, d1.GetLastRoll())
+		}
+	}
+}
+
+func Test_mockdie_is_predictable_for_multiple_rolls(t *testing.T) {
+	for i := 1; i <= 6; i++ {
+		d1 := NewDieFromInt(i)
+		for j := 0; j < 10; j++ {
+			d1.Roll()
+			if d1.GetLastRoll() != i {
+				t.Errorf("MockDie is not reliable, expected %d but got %d", i, d1.GetLastRoll())
+			}
+		}
+	}
+}
+
+func Test_mockdie_wraps_around_a_sequence_predictably_for_multiple_rolls(t *testing.T) {
+	d1 := NewDieFromArray([]int{1, 2, 3, 4, 5, 6})
+	for j := 1; j <= 3; j++ {
+		for i := 1; i <= 6; i++ {
+			d1.Roll()
+			if d1.GetLastRoll() != i {
+				t.Errorf("MockDie is not reliable, expected %d but got %d", i, d1.GetLastRoll())
+			}
+		}
+	}
+}
 
 func Test_die_roll_is_always_greater_than_zero_and_less_than_seven(t *testing.T) {
 	d1 := die.NewDie()
