@@ -1,11 +1,15 @@
-package skunk
+package die_test
 
 import (
+	"log"
 	"testing"
+
+	"github.com/estenrye/skunk/internal/skunk"
+	"github.com/estenrye/skunk/internal/skunk/die"
 )
 
 func Test_die_roll_is_always_greater_than_zero_and_less_than_seven(t *testing.T) {
-	var die IRollable = Die{}
+	var d1 skunk.IRollable = die.NewDie()
 	var numRolls = 10000
 	var counts [7]int
 	for i := 0; i < 7; i++ {
@@ -13,8 +17,9 @@ func Test_die_roll_is_always_greater_than_zero_and_less_than_seven(t *testing.T)
 	}
 
 	for i := 0; i < numRolls; i++ {
-		die.Roll()
-		switch actual := die.GetLastRoll(); actual {
+		d1.Roll()
+		log.Println(d1.GetLastRoll())
+		switch actual := d1.GetLastRoll(); actual {
 		case 1:
 			counts[1]++
 			break
