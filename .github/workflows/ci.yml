@@ -85,11 +85,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Initialize Swarm
-        run: docker swarm init
+      # - name: Initialize Swarm
+      #   run: docker swarm init
       
-      - name: Deploy testing stack
-        run: docker stack deploy -c ./internal/testing.stack.yml testing
+      # - name: Deploy testing stack
+      #   run: docker stack deploy -c ./internal/testing.stack.yml testing
       
       - name: Run Unit tests.
         run: go test ./... -coverprofile=coverage.txt -covermode=atomic
