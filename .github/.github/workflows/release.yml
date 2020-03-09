@@ -1,0 +1,107 @@
+name: release
+
+on:
+  push:
+    branches-ignore:
+      - '**'
+    tags:
+      - 'v*.*.*'
+
+jobs:
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
+
+    - name: Initialize Swarm
+      run: docker swarm init
+    
+    - name: Deploy testing stack
+      run: docker stack deploy -c ./internal/testing.stack.yml testing
+    
+    - name: Run Unit tests.
+      run: go test ./... -coverprofile=coverage.txt -covermode=atomic
+    
+    - name: Upload Coverage report to CodeCov
+      uses: codecov/codecov-action@v1.0.0
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./coverage.txt
+
+    - name: Lint Go Code
+      run: |
+        export PATH=$PATH:$(go env GOPATH)/bin # temporary fix. See https://github.com/actions/setup-go/issues/14
+        go get -u golang.org/x/lint/golint 
+        golint -set_exit_status ./...
+
+    - name: Build linux_amd64
+      run: GOOS=linux   GOARCH=amd64 go build -o skunk_linux -v ./cmd/skunk_app
+    
+    - name: Build windows_amd64
+      run: GOOS=windows GOARCH=amd64 go build -o skunk_win32nt.exe -v ./cmd/skunk_app
+    
+    - name: Build darwin_amd64
+      run: GOOS=darwin GOARCH=amd64 go build -o skunk_darwin -v ./cmd/skunk_app
+
+    - name: Build freebsd_amd64
+      run: GOOS=freebsd GOARCH=amd64 go build -o skunk_freebsd -v ./cmd/skunk_app
+
+    - name: Calculate SHA-256
+      run: sha256sum skunk_* > checksum.txt
+
+    - uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: Set env
+      run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+
+    # - name: Build Docker Image
+    #   run: |
+    #     docker build -t estenrye/skunk:${{ env.RELEASE_VERSION }} .
+    #     docker tag estenrye/skunk:${{ env.RELEASE_VERSION }} estenrye/skunk:latest
+    #     docker push estenrye/skunk:${{ env.RELEASE_VERSION }}
+    #     docker push estenrye/skunk:latest
+  
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          skunk_linux
+          skunk_win32nt.exe
+          skunk_darwin
+          skunk_freebsd
+          checksum.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          skunk_linux
+          skunk_win32nt.exe
+          skunk_darwin
+          skunk_freebsd
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
