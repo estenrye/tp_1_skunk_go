@@ -67,10 +67,10 @@ jobs:
     - name: Calculate SHA-256
       run: sha256sum skunk_* > checksum.txt
 
-    - uses: azure/docker-login@v1
-      with:
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+    # - uses: azure/docker-login@v1
+    #   with:
+    #     username: ${{ secrets.REGISTRY_USERNAME }}
+    #     password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: Set env
       run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
