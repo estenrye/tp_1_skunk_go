@@ -18,8 +18,10 @@ const (
 	Six State = 6
 )
 
+// String() converts the die.State to a human readable string.
 func (state State) String() string {
 	names := [...]string{
+		"Unknown State",
 		"Skunk",
 		"Deuce",
 		"Three",
@@ -33,4 +35,15 @@ func (state State) String() string {
 	}
 
 	return names[state]
+}
+
+// ToInt converts a die.State type to an int type.
+func (state State) ToInt() int {
+	values := [...]int{0, 1, 2, 3, 4, 5, 6}
+
+	if state < Skunk || state > Six {
+		return 0
+	}
+
+	return values[state]
 }
