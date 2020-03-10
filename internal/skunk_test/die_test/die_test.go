@@ -10,7 +10,7 @@ func Test_mockdie_is_predictable_for_a_single_roll(t *testing.T) {
 	for i := 1; i <= 6; i++ {
 		d1 := NewDieFromInt(i)
 		d1.Roll()
-		if d1.GetLastRoll() != i {
+		if d1.GetLastRoll() != die.State(i) {
 			t.Errorf("MockDie is not reliable, expected %d but got %d", i, d1.GetLastRoll())
 		}
 	}
@@ -21,7 +21,7 @@ func Test_mockdie_is_predictable_for_multiple_rolls(t *testing.T) {
 		d1 := NewDieFromInt(i)
 		for j := 0; j < 10; j++ {
 			d1.Roll()
-			if d1.GetLastRoll() != i {
+			if d1.GetLastRoll() != die.State(i) {
 				t.Errorf("MockDie is not reliable, expected %d but got %d", i, d1.GetLastRoll())
 			}
 		}
@@ -33,7 +33,7 @@ func Test_mockdie_wraps_around_a_sequence_predictably_for_multiple_rolls(t *test
 	for j := 1; j <= 3; j++ {
 		for i := 1; i <= 6; i++ {
 			d1.Roll()
-			if d1.GetLastRoll() != i {
+			if d1.GetLastRoll() != die.State(i) {
 				t.Errorf("MockDie is not reliable, expected %d but got %d", i, d1.GetLastRoll())
 			}
 		}
@@ -51,23 +51,23 @@ func Test_die_roll_is_always_greater_than_zero_and_less_than_seven(t *testing.T)
 	for i := 0; i < numRolls; i++ {
 		d1.Roll()
 		switch actual := d1.GetLastRoll(); actual {
-		case 1:
-			counts[1]++
+		case die.Skunk:
+			counts[die.Skunk]++
 			break
-		case 2:
-			counts[2]++
+		case die.Deuce:
+			counts[die.Deuce]++
 			break
-		case 3:
-			counts[3]++
+		case die.Three:
+			counts[die.Three]++
 			break
-		case 4:
-			counts[4]++
+		case die.Four:
+			counts[die.Four]++
 			break
-		case 5:
-			counts[5]++
+		case die.Five:
+			counts[die.Five]++
 			break
-		case 6:
-			counts[6]++
+		case die.Six:
+			counts[die.Six]++
 			break
 		default:
 			counts[0]++
