@@ -54,6 +54,10 @@ func (d Dice) GetLastState() State {
 		return SingleSkunk
 	}
 
+	if d.GetLastDie1() == die.UnknownState || d.GetLastDie2() == die.UnknownState {
+		return UnknownState
+	}
+
 	return ScorableRoll
 }
 

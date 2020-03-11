@@ -4,6 +4,8 @@ package die
 type State int
 
 const (
+	// UnknownState represents a die that has not been rolled.
+	UnknownState State = 0
 	// Skunk represents the state of a one.
 	Skunk State = 1
 	// Deuce represents the state of a two.

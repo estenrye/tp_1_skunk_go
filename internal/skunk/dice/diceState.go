@@ -12,6 +12,8 @@ const (
 	SkunkDeuce State = 2
 	// ScorableRoll represents a dice state where the sum is scorable.
 	ScorableRoll State = 3
+	// UnknownState represents a dice state where the dice have not yet been rolled.
+	UnknownState State = 4
 )
 
 func (state State) String() string {
@@ -20,6 +22,7 @@ func (state State) String() string {
 		"Double Skunk",
 		"Skunk Deuce",
 		"Scorable Roll",
+		"Unknown State",
 	}
 
 	if state < SingleSkunk || state > ScorableRoll {

@@ -86,3 +86,11 @@ func Test_die_roll_is_always_greater_than_zero_and_less_than_seven(t *testing.T)
 		}
 	}
 }
+
+func Test_when_GetLastRoll_is_called_before_Roll_state_is_Unknown(t *testing.T) {
+	die1 := die.NewDie()
+
+	if die.NewDie().GetLastRoll() != die.UnknownState {
+		t.Errorf("When GetLastRoll is called before Roll, expected %s, got %s.", die.UnknownState, die1.GetLastRoll())
+	}
+}

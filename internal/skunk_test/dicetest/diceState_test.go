@@ -22,8 +22,11 @@ func Test_given_state_constant_returns_expected_string_value(t *testing.T) {
 	if dice.State(-1).String() != "Unknown State" {
 		t.Errorf("dice.State(-1).String() returned '%s', expected '%s'.", dice.State(-1).String(), "Unknown State")
 	}
-	if dice.State(4).String() != "Unknown State" {
-		t.Errorf("dice.State(4).String() returned '%s', expected '%s'.", dice.State(4).String(), "Unknown State")
+	if dice.State(5).String() != "Unknown State" {
+		t.Errorf("dice.State(4).String() returned '%s', expected '%s'.", dice.State(5).String(), "Unknown State")
+	}
+	if dice.UnknownState.String() != "Unknown State" {
+		t.Errorf("dice.State(4).String() returned '%s', expected '%s'.", dice.UnknownState.String(), "Unknown State")
 	}
 }
 

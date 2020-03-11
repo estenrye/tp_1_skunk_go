@@ -16,6 +16,11 @@ func NewDieFromInt(rolls int) die.ISkunkDie {
 	return NewDieFromArray([]int{rolls})
 }
 
+// NewDieFromDieState creates a new Die as an ISkunkDie instance.
+func NewDieFromDieState(rolls die.State) die.ISkunkDie {
+	return NewDieFromArray([]int{rolls.ToInt()})
+}
+
 // NewDieFromArray creates a new Die as an ISkunkDie instance.
 func NewDieFromArray(rolls []int) die.ISkunkDie {
 	return &MockDie{
