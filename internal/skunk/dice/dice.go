@@ -1,6 +1,8 @@
 package dice
 
 import (
+	"fmt"
+
 	"github.com/estenrye/skunk/internal/skunk/die"
 )
 
@@ -75,4 +77,8 @@ func (d *Dice) Roll() {
 // GetLastRoll returns the score of the last dice roll.
 func (d Dice) GetLastRoll() int {
 	return d.lastRoll
+}
+
+func (d Dice) String() string {
+	return fmt.Sprintf("Die1: %s, Die2: %s", d.die1.GetLastRoll(), d.die2.GetLastRoll())
 }
