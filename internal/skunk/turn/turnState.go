@@ -1,4 +1,4 @@
-package dice
+package turn
 
 // State represents the state of a pair of dice in the game of skunk.
 type State int
@@ -10,7 +10,7 @@ const (
 	Active State = 1
 	// Complete represents a turn state where the user passes their turn before they roll a skunk.
 	Complete State = 2
-	// Complete represents a turn state where the user passes their turn before they roll a skunk.
+	// CompleteResetScore represents a turn state where the user passes their turn before they roll a skunk.
 	CompleteResetScore State = 3
 	// UnknownState represents a dice state where the dice have not yet been rolled.
 	UnknownState State = 4
