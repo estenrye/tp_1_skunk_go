@@ -47,7 +47,7 @@ func (t *Turn) Roll() {
 
 // Pass performs the player's pass action in the turn, completing their turn.
 func (t *Turn) Pass() {
-
+	t.state = Complete
 }
 
 // GetScore returns the player's current turn score.
