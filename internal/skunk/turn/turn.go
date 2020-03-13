@@ -12,6 +12,11 @@ type Turn struct {
 	state     State
 }
 
+// NewTurn creates a player turn.
+func NewTurn() ISkunkTurn {
+	return NewTurnFromISkunkDice(dice.NewDice())
+}
+
 // NewTurnFromISkunkDice creates a turn from an initialized ISkunkDice object
 func NewTurnFromISkunkDice(roll dice.ISkunkDice) ISkunkTurn {
 	return &Turn{
@@ -23,6 +28,10 @@ func NewTurnFromISkunkDice(roll dice.ISkunkDice) ISkunkTurn {
 
 // Roll performs the player's roll action in the turn and rolls the dice.
 func (t *Turn) Roll() {
+	if t.state != Active && t.state != NotStarted {
+		return
+	}
+
 	t.skunkDice.Roll()
 	if t.skunkDice.GetLastState() == dice.ScorableRoll {
 		t.score += t.skunkDice.GetLastRoll()
@@ -47,6 +56,10 @@ func (t *Turn) Roll() {
 
 // Pass performs the player's pass action in the turn, completing their turn.
 func (t *Turn) Pass() {
+	if t.state != Active && t.state != NotStarted {
+		return
+	}
+
 	t.state = Complete
 }
 
