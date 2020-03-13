@@ -95,3 +95,20 @@ func Test_when_no_skunk_is_rolled_score_is_sum_penalty_is_zero_and_state_is_acti
 		}
 	}
 }
+
+func Test_when_no_actions_have_been_taken_state_is_NotStarted_score_is_zero_penatly_is_zero(t *testing.T) {
+	die1 := dietest.NewDieFromDieState(die.Skunk)
+	die2 := dietest.NewDieFromDieState(die.Skunk)
+	skunkRoll := dice.NewDiceFromISkunkDice(die1, die2)
+	playerTurn := turn.NewTurnFromISkunkDice(skunkRoll)
+
+	if playerTurn.GetScore() != 0 {
+		t.Errorf("When no actions have been taken, expected score to be 0, got %d", playerTurn.GetScore())
+	}
+	if playerTurn.GetPenalty() != 0 {
+		t.Errorf("When no actions have been taken, expected penalty to be 0, got %d", playerTurn.GetPenalty())
+	}
+	if playerTurn.GetState() != turn.NotStarted {
+		t.Errorf("When no actions have been taken, expected state to be Not Started, got %s", playerTurn.GetState())
+	}
+}

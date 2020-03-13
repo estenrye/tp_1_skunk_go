@@ -16,6 +16,8 @@ type Turn struct {
 func NewTurnFromISkunkDice(roll dice.ISkunkDice) ISkunkTurn {
 	return &Turn{
 		skunkDice: roll,
+		penalty:   0,
+		state:     NotStarted,
 	}
 }
 
