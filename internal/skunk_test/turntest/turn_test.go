@@ -170,3 +170,15 @@ func Test_when_a_skunk_is_rolled_roll_action_has_no_effect(t *testing.T) {
 
 	assertTurn(t, "single skunk is rolled and a roll action is taken", 0, 1, turn.Complete, playerTurn)
 }
+
+func Test_when_last_roll_is_three_and_six_expected_string_is_returned(t *testing.T) {
+	die1 := dietest.NewDieFromDieState(die.Three)
+	die2 := dietest.NewDieFromDieState(die.Six)
+	skunkRoll := dice.NewDiceFromISkunkDice(die1, die2)
+	playerTurn := turn.NewTurnFromISkunkDice(skunkRoll)
+	playerTurn.Roll()
+
+	if playerTurn.GetLastRoll() != "Die1: 3, Die2: 6" {
+		t.Errorf("When a three and a six are rolled GetLastRoll() returns 'Die1: 3, Die2: 6', got %s", playerTurn.GetLastRoll())
+	}
+}

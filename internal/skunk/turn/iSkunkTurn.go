@@ -7,4 +7,5 @@ type ISkunkTurn interface {
 	GetScore() int
 	GetPenalty() int
 	GetState() State
+	GetLastRoll() string
 }

@@ -1,6 +1,8 @@
 package turn
 
 import (
+	"fmt"
+
 	"github.com/estenrye/skunk/internal/skunk/dice"
 )
 
@@ -76,4 +78,9 @@ func (t Turn) GetPenalty() int {
 // GetState returns the player's turn state.
 func (t Turn) GetState() State {
 	return t.state
+}
+
+// GetLastRoll returns the string representation of the last dice roll.
+func (t Turn) GetLastRoll() string {
+	return fmt.Sprintf("Die1: %d, Die2: %d", t.skunkDice.GetLastDie1().ToInt(), t.skunkDice.GetLastDie2().ToInt())
 }
