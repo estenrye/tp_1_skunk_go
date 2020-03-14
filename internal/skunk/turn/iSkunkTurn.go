@@ -1,5 +1,9 @@
 package turn
 
+import (
+	"github.com/estenrye/skunk/internal/skunk/dice"
+)
+
 // ISkunkTurn provides an interface to interact with a turn object
 type ISkunkTurn interface {
 	Roll()
@@ -7,5 +11,5 @@ type ISkunkTurn interface {
 	GetScore() int
 	GetPenalty() int
 	GetState() State
-	GetLastRoll() string
+	GetLastRoll() dice.ISkunkDiceResult
 }
