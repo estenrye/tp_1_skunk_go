@@ -8,6 +8,7 @@ type Player struct {
 	score int
 	chips int
 	turn  turn.ISkunkTurn
+	state State
 }
 
 // NewPlayer initializes a human player.
@@ -16,6 +17,7 @@ func NewPlayer(name string) ISkunkPlayer {
 		name:  name,
 		score: 0,
 		chips: 50,
+		state: TurnNotStarted,
 	}
 }
 
@@ -31,12 +33,23 @@ func (p *Player) NewTurnFromISkunkTurn(turn turn.ISkunkTurn) {
 
 // Roll performs the roll action for the player.
 func (p *Player) Roll() {
+	if p.turn == nil {
+		return
+	}
 	p.turn.Roll()
+
+	if p.turn.GetState() == turn.Active {
+		p.state = ActiveTurn
+	}
 }
 
 // Pass performs the pass action for the player.
 func (p *Player) Pass() {
+	if p.turn == nil {
+		return
+	}
 	p.turn.Pass()
+	p.state = CompleteTurn
 }
 
 // GetName returns the player's name
@@ -57,4 +70,9 @@ func (p Player) GetLastChips() int {
 // GetLastTurn returns a data representation of the player's turn object.
 func (p Player) GetLastTurn() turn.ISkunkTurnResult {
 	return p.turn
+}
+
+// GetLastState returns tthe player state as of the last action taken.
+func (p Player) GetLastState() State {
+	return p.state
 }
