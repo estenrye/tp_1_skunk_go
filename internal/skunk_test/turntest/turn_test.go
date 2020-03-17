@@ -178,7 +178,19 @@ func Test_when_last_roll_is_three_and_six_expected_string_is_returned(t *testing
 	playerTurn := turn.NewTurnFromISkunkDice(skunkRoll)
 	playerTurn.Roll()
 
-	if playerTurn.GetLastRoll() != "Die1: 3, Die2: 6" {
-		t.Errorf("When a three and a six are rolled GetLastRoll() returns 'Die1: 3, Die2: 6', got %s", playerTurn.GetLastRoll())
+	if playerTurn.GetLastRoll().GetLastDie1() != die.Three {
+		t.Errorf("When a three and a six are rolled, GetLastRoll().GetLastDie1() returns %s, got %s", die.Three, playerTurn.GetLastRoll().GetLastDie1())
+	}
+
+	if playerTurn.GetLastRoll().GetLastDie2() != die.Six {
+		t.Errorf("When a three and a six are rolled, GetLastRoll().GetLastDie1() returns %s, got %s", die.Six, playerTurn.GetLastRoll().GetLastDie2())
+	}
+
+	if playerTurn.GetLastRoll().GetLastRoll() != 9 {
+		t.Errorf("When a three and a six are rolled, GetLastRoll().GetLastRoll() returns %d, got %d", 9, playerTurn.GetLastRoll().GetLastRoll())
+	}
+
+	if playerTurn.GetLastRoll().GetLastState() != dice.ScorableRoll {
+		t.Errorf("When a three and a six are rolled, GetLastRoll().GetLastRoll() returns %s, got %s", dice.ScorableRoll, playerTurn.GetLastRoll().GetLastState())
 	}
 }

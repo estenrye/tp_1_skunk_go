@@ -4,10 +4,8 @@ import (
 	"github.com/estenrye/skunk/internal/skunk/dice"
 )
 
-// ISkunkTurn provides an interface to interact with a turn object
-type ISkunkTurn interface {
-	Roll()
-	Pass()
+// ISkunkTurnResult provides an interface for passing turn data back to the presentation layer.
+type ISkunkTurnResult interface {
 	GetScore() int
 	GetPenalty() int
 	GetState() State

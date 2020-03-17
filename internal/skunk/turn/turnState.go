@@ -12,7 +12,7 @@ const (
 	Complete State = 2
 	// CompleteResetScore represents a turn state where the user passes their turn before they roll a skunk.
 	CompleteResetScore State = 3
-	// UnknownState represents a dice state where the dice have not yet been rolled.
+	// UnknownState represents an undefined turn state.
 	UnknownState State = 4
 )
 
