@@ -6,11 +6,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/estenrye/skunk/internal/skunk/dice"
 	"github.com/estenrye/skunk/internal/skunk/player"
 )
 
 func getTurnInput(p player.ISkunkPlayer, text string) {
-	fmt.Printf("%s: Current Turn Score: %d.  Would you like to roll or pass? (r|p): ", p.GetName(), p.GetLastTurn().GetScore())
 	// convert CRLF to LF
 	text = strings.Replace(text, "\n", "", -1)
 	text = strings.Replace(text, "\r", "", -1)
@@ -19,6 +19,9 @@ func getTurnInput(p player.ISkunkPlayer, text string) {
 		p.Roll()
 		r := p.GetLastTurn().GetLastRoll()
 		fmt.Printf("%s: Rolled a %s and a %s.\n", p.GetName(), r.GetLastDie1(), r.GetLastDie2())
+		if r.GetLastState() != dice.ScorableRoll {
+			fmt.Printf("%s: Rolled a %s.  Please pay the kitty %d chips.\n", p.GetName(), r.GetLastState(), p.GetLastTurn().GetPenalty())
+		}
 		break
 	case "p":
 		p.Pass()
@@ -38,6 +41,7 @@ func main() {
 		fmt.Printf("It's %s's turn.\n", p.GetName())
 
 		for p.GetLastState() != player.CompleteTurn && p.GetLastState() != player.CompleteEndgame {
+			fmt.Printf("%s: Current Turn Score: %d.  Would you like to roll or pass? (r|p): ", p.GetName(), p.GetLastTurn().GetScore())
 			text, err := reader.ReadString('\n')
 			if err != nil {
 				fmt.Println(err)
