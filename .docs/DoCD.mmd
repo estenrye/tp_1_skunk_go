@@ -1,0 +1,33 @@
+classDiagram
+  class Die {
+    lastRoll
+  }
+
+  class Dice {
+    lastRoll
+    state
+  }
+
+  Dice "1" --> "2" Die : Rolls a
+
+  class Turn {
+    score
+    penalty
+    state
+  }
+
+  Turn "1" --> "1" Dice : Gets Last Roll
+
+  class Player {
+    name
+    score
+    chips
+  }
+
+  Player "0..n" --> "1" Turn : Rolls/Passes
+
+  class Game {
+    kitty
+  }
+
+  Game "1..n" --> "0..n" Player: Has

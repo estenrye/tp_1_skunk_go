@@ -1,0 +1,54 @@
+sequenceDiagram
+  SkunkApp->>Player: NewPlayer("Player 1")
+  Player->>SkunkApp: p { "Player 1", 0 pts, 50 chips}
+  loop p.GetLastState() != CompleteEndgame && p.GetLastChips() > 0
+  SkunkApp->>Player: p.NewTurn()
+  activate SkunkApp
+  Player->>Turn: NewTurn()
+  activate Player
+  Turn->>Dice: NewDice()
+  activate Turn
+  Dice->>Die: NewDie()
+  Die->>Dice: die1
+  Dice->>Die: NewDie()
+  Die->>Dice: die2
+  Dice->>Turn: dice {die1, die2}
+  deactivate Turn
+  Turn->>Player: t { 0 pts, 0 chips, NotStarted}
+  deactivate Player
+  deactivate SkunkApp
+  loop p.GetLastState() != CompleteTurn && p.GetLastState() != CompleteEndgame
+  SkunkApp->>SkunkApp: Read Input
+  alt input == 'r'
+  SkunkApp->>Player: p.Roll()
+  activate SkunkApp
+  Player->>Turn: t.Roll()
+  activate Player
+  Turn->>Dice: dice.Roll()
+  activate Turn
+  Dice->>Die: dice.die1.Roll()
+  Dice->>Die: dice.die2.Roll()
+  Dice->>Dice: Update State
+  deactivate Turn
+  Turn->>Dice: Read dice.State
+  Dice->>Turn: diceState
+  Turn->>Turn: update score, penalty, and state
+  deactivate Player
+  Player->>Turn: t.State()
+  Turn->>Player: turnstate
+  Player->>Player: Update score, chips, and state
+  deactivate SkunkApp
+  else input == 'p'
+  SkunkApp->>Player: p.Pass()
+  activate SkunkApp
+  Player->>Turn: t.Pass()
+  activate Player
+  Turn->>Turn: Update State
+  deactivate Player
+  Player->>Turn: t.State()
+  Turn->>Player: turnstate
+  Player->>Player: Update score, chips, and state
+  deactivate SkunkApp
+  end
+  end
+  end
