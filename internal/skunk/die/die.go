@@ -1,8 +1,7 @@
 package die
 
 import (
-	"math/rand"
-	"time"
+	rand "math/rand"
 )
 
 // Die implements a psuedorandom six sided die.
@@ -17,8 +16,9 @@ func NewDie() ISkunkDie {
 
 // Roll implements the ISkunkDie.Roll() interface method.
 func (d *Die) Roll() {
-	rand.Seed(time.Now().UnixNano())
-	d.lastRoll = State(rand.Intn(6) + 1)
+	var src cryptoSource
+	rnd := rand.New(src)
+	d.lastRoll = State(rnd.Intn(6) + 1)
 }
 
 // GetLastRoll implements the ISkunkDie.GetLastRoll() interface method.
